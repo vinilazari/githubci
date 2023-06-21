@@ -1,8 +1,8 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Acess Test
 
-# Controls when the action will run
+# Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
@@ -30,19 +30,18 @@ jobs:
         run: |
           newman --version
           node --version
-
-      # Runs a single command using the runners shell
+          
+      # Runs a single command using the runners shell      
       - name: Step 2 Install Newman-Reporter-Htmlextra
         run: sudo npm install --force -g newman-reporter-htmlextra
         
       # Runs a set of commands using the runners shell
       - name: Step 3 Execute collection
-        run: newman run access-ci -e access-env --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
-    
+        run: newman run ./access-ci -e ./access-env --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
+   
       # Runs a set of commands using the runners shell
       - name: Step 4 Archive production artifacts
-        uses: actions/upload-artifact@v3 
+        uses: actions/upload-artifact@v3
         with:
             name: report
             path: ./results/Report.html
-          
