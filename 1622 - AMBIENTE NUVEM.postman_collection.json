@@ -1,0 +1,3679 @@
+{
+	"info": {
+		"_postman_id": "11c0eea5-6d63-483f-b3d1-4df535b63509",
+		"name": "1622 - AMBIENTE NUVEM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23798811"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"Email\", pm.variables.replaceIn(\"{{$randomNoun}}\") + pm.variables.replaceIn(\"{{$randomBankAccount}}\") + \"@\" + \"qacoderstreinamento.com\")\r",
+							"\r",
+							"function fullname () {\r",
+							"\r",
+							"var fullName = \"Vinicius Lazari\";\r",
+							"\r",
+							"var randomItem = fullName;\r",
+							"\r",
+							"return randomItem;\r",
+							"}\r",
+							"pm.environment.set(\"fullName\", fullname());\r",
+							"function password(){\r",
+							"var PassWord = \"Test@123\";\r",
+							"var randomItem = PassWord;\r",
+							"return randomItem;\r",
+							"}\r",
+							"\r",
+							"pm.environment.set(\"PassWord\", password());\r",
+							"function email(){\r",
+							"\r",
+							"var Email = \"v.lazari02@treinamento.com\";\r",
+							"var randomItem = Email;\r",
+							"return randomItem;\r",
+							"}\r",
+							"//pm.environment.set(\"Email\", email());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"fullName\":\"{{fullName}}\",\r\n    \"mail\":\"{{Email}}\",\r\n    \"idCompany\":\"059.720.749-66\",\r\n    \"password\":\"{{PassWord}}\",\r\n    \"confirmPassword\":\"{{PassWord}}\",\r\n    \"accessProfile\":\"Admin\",\r\n    \"audit\":[\r\n        {\r\n            \"loginUser\":\"vinilazari\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/signup",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"Email\", pm.variables.get(\"Email\"));\r",
+							"pm.environment.set(\"PassWord\", pm.variables.get(\"PassWord\"));\r",
+							"\r",
+							"const request_sign = {\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api\", \r",
+							"      method: 'POST',\r",
+							"      header: {\r",
+							"        'Accept': '*/*',\r",
+							"      'Content-Type': 'application/x-www-form-urlencoded',\r",
+							"      },\r",
+							"      body: {\r",
+							"          mode: 'urlencoded',\r",
+							"          urlencoded: [\r",
+							"            {key: 'fullName', value: pm.environment.get('fullName')},\r",
+							"            {key: \"mail\", value: pm.environment.get('Email')},\r",
+							"            {key: \"idCompany\", value: \"28.458.256/0001-99\"},\r",
+							"            {key: \"password\", value: 'QAcoders123@'},\r",
+							"            {key: \"confirmPassword\", value: 'QAcoders123@'},\r",
+							"            {key: \"accessProfile\", value: \"Admin\"},\r",
+							"            {\"audit\": [\r",
+							"                    {\r",
+							"                    \"loginUser\": \"teste147\"\r",
+							"                    }\r",
+							"            ]}   \r",
+							"          ]           \r",
+							"}}\r",
+							"\r",
+							"pm.sendRequest(request_sign, function (err, response) {\r",
+							"    console.log(response.json());   \r",
+							"\r",
+							"});\r",
+							"    \r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.environment.set(\"Token\", JSON.parse(responseBody).token)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mail\": \"{{Email}}\",\r\n    \"password\": \"{{PassWord}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - Success",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}'));\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"const schema = {\r",
+							"    \"title\": \"Root Schema\",\r",
+							"    \"type\": \"object\",\r",
+							"    \"default\": {},\r",
+							"    \"required\": [\r",
+							"        \"nameGroup\",\r",
+							"        \"status\",\r",
+							"        \"audit\",\r",
+							"        \"_id\",\r",
+							"        \"__v\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"nameGroup\": {\r",
+							"            \"title\": \"The nameGroup Schema\",\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"examples\": [\r",
+							"                \"Infrastructure_white\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"status\": {\r",
+							"            \"title\": \"The status Schema\",\r",
+							"            \"type\": \"boolean\",\r",
+							"            \"default\": false,\r",
+							"            \"examples\": [\r",
+							"                true\r",
+							"            ]\r",
+							"        },\r",
+							"        \"audit\": {\r",
+							"            \"title\": \"The audit Schema\",\r",
+							"            \"type\": \"array\",\r",
+							"            \"default\": [],\r",
+							"            \"items\": {\r",
+							"                \"title\": \"A Schema\",\r",
+							"                \"type\": \"object\",\r",
+							"                \"default\": {},\r",
+							"                \"required\": [\r",
+							"                    \"registrationDate\",\r",
+							"                    \"loginUser\",\r",
+							"                    \"registration\",\r",
+							"                    \"_id\"\r",
+							"                ],\r",
+							"                \"properties\": {\r",
+							"                    \"registrationDate\": {\r",
+							"                        \"title\": \"The registrationDate Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"loginUser\": {\r",
+							"                        \"title\": \"The loginUser Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"teste147\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"registration\": {\r",
+							"                        \"title\": \"The registration Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"QaCoders-0001\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"_id\": {\r",
+							"                        \"title\": \"The _id Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"640bdd536c3f9beb06ba5292\"\r",
+							"                        ]\r",
+							"                    }\r",
+							"                },\r",
+							"                \"examples\": [{\r",
+							"                    \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"teste147\",\r",
+							"                    \"registration\": \"QaCoders-0001\",\r",
+							"                    \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"                }]\r",
+							"            },\r",
+							"            \"examples\": [\r",
+							"                [{\r",
+							"                    \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"teste147\",\r",
+							"                    \"registration\": \"QaCoders-0001\",\r",
+							"                    \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"                }]\r",
+							"            ]\r",
+							"        },\r",
+							"        \"_id\": {\r",
+							"            \"title\": \"The _id Schema\",\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"examples\": [\r",
+							"                \"640bdd536c3f9beb06ba5291\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"__v\": {\r",
+							"            \"title\": \"The __v Schema\",\r",
+							"            \"type\": \"integer\",\r",
+							"            \"default\": 0,\r",
+							"            \"examples\": [\r",
+							"                0\r",
+							"            ]\r",
+							"        }\r",
+							"    },\r",
+							"    \"examples\": [{\r",
+							"        \"nameGroup\": \"Infrastructure_white\",\r",
+							"        \"status\": true,\r",
+							"        \"audit\": [{\r",
+							"            \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"            \"loginUser\": \"teste147\",\r",
+							"            \"registration\": \"QaCoders-0001\",\r",
+							"            \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"        }],\r",
+							"        \"_id\": \"640bdd536c3f9beb06ba5291\",\r",
+							"        \"__v\": 0\r",
+							"    }]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar o nome do Grupo\", function () {\r",
+							"    pm.expect(jsonData.nameGroup).to.eql(pm.environment.get(\"nameGroup\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar o corpo da resposta\", function(){\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":\"{{nameGroup}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - GET LIST",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const schema = {\r",
+							"    \"title\": \"Root Schema\",\r",
+							"    \"type\": \"array\",\r",
+							"    \"default\": [],\r",
+							"    \"items\": {\r",
+							"        \"title\": \"A Schema\",\r",
+							"        \"type\": \"object\",\r",
+							"        \"required\": [\r",
+							"            \"_id\",\r",
+							"            \"nameGroup\",\r",
+							"            \"status\",\r",
+							"            \"audit\",\r",
+							"            \"__v\"\r",
+							"        ],\r",
+							"        \"properties\": {\r",
+							"            \"_id\": {\r",
+							"                \"title\": \"The _id Schema\",\r",
+							"                \"type\": \"string\",\r",
+							"                \"examples\": [\r",
+							"                    \"63f050c3e88c94b477f28ae1\",\r",
+							"                    \"63f0c3855eb06491c043bb5f\",\r",
+							"                    \"63f0d4cc5eb06491c043cbc1\",\r",
+							"                    \"63f0d4d45eb06491c043df0d\",\r",
+							"                    \"63f6684324bda95dd564319f\",\r",
+							"                    \"63f6684424bda95dd564320e\",\r",
+							"                    \"63fd4db0a9ab10e0d1498875\",\r",
+							"                    \"64021a58734a4170c67b0f54\",\r",
+							"                    \"640bd2136c3f9beb06ba4d99\",\r",
+							"                    \"640bd21b6c3f9beb06ba4da5\"\r",
+							"                ]\r",
+							"            },\r",
+							"            \"nameGroup\": {\r",
+							"                \"title\": \"The nameGroup Schema\",\r",
+							"                \"type\": \"string\",\r",
+							"                \"examples\": [\r",
+							"                    \"0ea190ff-0879-43ac-af5d-70b8bd4c9e6a_Accounts\",\r",
+							"                    \"Markets_gold_alterado\",\r",
+							"                    \"Communications_red_alterado\",\r",
+							"                    \"adccddcf-61f3-4ed0-bcbf-4c3ddc1119fb_Infrastructure\",\r",
+							"                    \"39232095-9626-4243-82d1-1e4ea5a073ca_Assurance\",\r",
+							"                    \"38db3018-be24-42ac-b18e-7a1fe832716e_Research\",\r",
+							"                    \"5fe62421-542c-4ba2-960c-41e7050ccf63_Integration\",\r",
+							"                    \"87fe3ff3-75df-41a1-aa93-d4942c847898_Applications\",\r",
+							"                    \"Data_black\",\r",
+							"                    \"Tactics_blue\"\r",
+							"                ]\r",
+							"            },\r",
+							"            \"status\": {\r",
+							"                \"title\": \"The status Schema\",\r",
+							"                \"type\": \"boolean\",\r",
+							"                \"examples\": [\r",
+							"                    true\r",
+							"                ]\r",
+							"            },\r",
+							"            \"audit\": {\r",
+							"                \"title\": \"The audit Schema\",\r",
+							"                \"type\": \"array\",\r",
+							"                \"items\": {\r",
+							"                    \"title\": \"A Schema\",\r",
+							"                    \"type\": \"object\",\r",
+							"                    \"required\": [\r",
+							"                        \"registrationDate\",\r",
+							"                        \"loginUser\",\r",
+							"                        \"registration\",\r",
+							"                        \"_id\"\r",
+							"                    ],\r",
+							"                    \"properties\": {\r",
+							"                        \"registrationDate\": {\r",
+							"                            \"title\": \"The registrationDate Schema\",\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"examples\": [\r",
+							"                                \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                                \"\",\r",
+							"                                \"Wed Feb 22 2023 16:08:51 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                                \"Mon Feb 27 2023 21:41:20 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                                \"Fri Mar 03 2023 13:03:36 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                                \"Fri Mar 10 2023 21:57:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                                \"Fri Mar 10 2023 21:58:03 GMT-0300 (Horário Padrão de Brasília)\"\r",
+							"                            ]\r",
+							"                        },\r",
+							"                        \"loginUser\": {\r",
+							"                            \"title\": \"The loginUser Schema\",\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"examples\": [\r",
+							"                                \"teste147\",\r",
+							"                                \"\"\r",
+							"                            ]\r",
+							"                        },\r",
+							"                        \"registration\": {\r",
+							"                            \"title\": \"The registration Schema\",\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"examples\": [\r",
+							"                                \"QaCoders-0001\",\r",
+							"                                \"\"\r",
+							"                            ]\r",
+							"                        },\r",
+							"                        \"_id\": {\r",
+							"                            \"title\": \"The _id Schema\",\r",
+							"                            \"type\": \"string\",\r",
+							"                            \"examples\": [\r",
+							"                                \"63f6691a24bda95dd56436fd\",\r",
+							"                                \"640bdc476c3f9beb06ba5207\",\r",
+							"                                \"640bdb886c3f9beb06ba517b\",\r",
+							"                                \"6403334a7f62785bffd6618c\",\r",
+							"                                \"63f6684324bda95dd56431a0\",\r",
+							"                                \"64021a59734a4170c67b11bd\",\r",
+							"                                \"63fd4db0a9ab10e0d1498876\",\r",
+							"                                \"64021a58734a4170c67b0f55\",\r",
+							"                                \"640bd2136c3f9beb06ba4d9a\",\r",
+							"                                \"640bd21b6c3f9beb06ba4da6\"\r",
+							"                            ]\r",
+							"                        }\r",
+							"                    },\r",
+							"                    \"examples\": [{\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"63f6691a24bda95dd56436fd\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bdc476c3f9beb06ba5207\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bdb886c3f9beb06ba517b\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"\",\r",
+							"                        \"loginUser\": \"\",\r",
+							"                        \"registration\": \"\",\r",
+							"                        \"_id\": \"6403334a7f62785bffd6618c\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Wed Feb 22 2023 16:08:51 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"63f6684324bda95dd56431a0\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"64021a59734a4170c67b11bd\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Mon Feb 27 2023 21:41:20 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"63fd4db0a9ab10e0d1498876\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Fri Mar 03 2023 13:03:36 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"64021a58734a4170c67b0f55\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Fri Mar 10 2023 21:57:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bd2136c3f9beb06ba4d9a\"\r",
+							"                    },\r",
+							"                    {\r",
+							"                        \"registrationDate\": \"Fri Mar 10 2023 21:58:03 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bd21b6c3f9beb06ba4da6\"\r",
+							"                    }]\r",
+							"                },\r",
+							"                \"examples\": [\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"63f6691a24bda95dd56436fd\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bdc476c3f9beb06ba5207\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bdb886c3f9beb06ba517b\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"\",\r",
+							"                        \"loginUser\": \"\",\r",
+							"                        \"registration\": \"\",\r",
+							"                        \"_id\": \"6403334a7f62785bffd6618c\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Wed Feb 22 2023 16:08:51 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"63f6684324bda95dd56431a0\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"64021a59734a4170c67b11bd\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Mon Feb 27 2023 21:41:20 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"63fd4db0a9ab10e0d1498876\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Fri Mar 03 2023 13:03:36 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"64021a58734a4170c67b0f55\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Fri Mar 10 2023 21:57:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bd2136c3f9beb06ba4d9a\"\r",
+							"                    }],\r",
+							"                    [{\r",
+							"                        \"registrationDate\": \"Fri Mar 10 2023 21:58:03 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                        \"loginUser\": \"teste147\",\r",
+							"                        \"registration\": \"QaCoders-0001\",\r",
+							"                        \"_id\": \"640bd21b6c3f9beb06ba4da6\"\r",
+							"                    }]\r",
+							"                ]\r",
+							"            },\r",
+							"            \"__v\": {\r",
+							"                \"title\": \"The __v Schema\",\r",
+							"                \"type\": \"integer\",\r",
+							"                \"examples\": [\r",
+							"                    0\r",
+							"                ]\r",
+							"            }\r",
+							"        },\r",
+							"        \"examples\": [{\r",
+							"            \"_id\": \"63f050c3e88c94b477f28ae1\",\r",
+							"            \"nameGroup\": \"0ea190ff-0879-43ac-af5d-70b8bd4c9e6a_Accounts\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"63f6691a24bda95dd56436fd\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f0c3855eb06491c043bb5f\",\r",
+							"            \"nameGroup\": \"Markets_gold_alterado\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bdc476c3f9beb06ba5207\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f0d4cc5eb06491c043cbc1\",\r",
+							"            \"nameGroup\": \"Communications_red_alterado\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bdb886c3f9beb06ba517b\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f0d4d45eb06491c043df0d\",\r",
+							"            \"nameGroup\": \"adccddcf-61f3-4ed0-bcbf-4c3ddc1119fb_Infrastructure\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"\",\r",
+							"                \"loginUser\": \"\",\r",
+							"                \"registration\": \"\",\r",
+							"                \"_id\": \"6403334a7f62785bffd6618c\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f6684324bda95dd564319f\",\r",
+							"            \"nameGroup\": \"39232095-9626-4243-82d1-1e4ea5a073ca_Assurance\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Wed Feb 22 2023 16:08:51 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"63f6684324bda95dd56431a0\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f6684424bda95dd564320e\",\r",
+							"            \"nameGroup\": \"38db3018-be24-42ac-b18e-7a1fe832716e_Research\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"64021a59734a4170c67b11bd\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63fd4db0a9ab10e0d1498875\",\r",
+							"            \"nameGroup\": \"5fe62421-542c-4ba2-960c-41e7050ccf63_Integration\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Mon Feb 27 2023 21:41:20 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"63fd4db0a9ab10e0d1498876\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"64021a58734a4170c67b0f54\",\r",
+							"            \"nameGroup\": \"87fe3ff3-75df-41a1-aa93-d4942c847898_Applications\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Fri Mar 03 2023 13:03:36 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"64021a58734a4170c67b0f55\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"640bd2136c3f9beb06ba4d99\",\r",
+							"            \"nameGroup\": \"Data_black\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Fri Mar 10 2023 21:57:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bd2136c3f9beb06ba4d9a\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"640bd21b6c3f9beb06ba4da5\",\r",
+							"            \"nameGroup\": \"Tactics_blue\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Fri Mar 10 2023 21:58:03 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bd21b6c3f9beb06ba4da6\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        }]\r",
+							"    },\r",
+							"    \"examples\": [\r",
+							"        [{\r",
+							"            \"_id\": \"63f050c3e88c94b477f28ae1\",\r",
+							"            \"nameGroup\": \"0ea190ff-0879-43ac-af5d-70b8bd4c9e6a_Accounts\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"63f6691a24bda95dd56436fd\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f0c3855eb06491c043bb5f\",\r",
+							"            \"nameGroup\": \"Markets_gold_alterado\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bdc476c3f9beb06ba5207\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f0d4cc5eb06491c043cbc1\",\r",
+							"            \"nameGroup\": \"Communications_red_alterado\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bdb886c3f9beb06ba517b\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f0d4d45eb06491c043df0d\",\r",
+							"            \"nameGroup\": \"adccddcf-61f3-4ed0-bcbf-4c3ddc1119fb_Infrastructure\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"\",\r",
+							"                \"loginUser\": \"\",\r",
+							"                \"registration\": \"\",\r",
+							"                \"_id\": \"6403334a7f62785bffd6618c\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f6684324bda95dd564319f\",\r",
+							"            \"nameGroup\": \"39232095-9626-4243-82d1-1e4ea5a073ca_Assurance\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Wed Feb 22 2023 16:08:51 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"63f6684324bda95dd56431a0\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63f6684424bda95dd564320e\",\r",
+							"            \"nameGroup\": \"38db3018-be24-42ac-b18e-7a1fe832716e_Research\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"64021a59734a4170c67b11bd\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"63fd4db0a9ab10e0d1498875\",\r",
+							"            \"nameGroup\": \"5fe62421-542c-4ba2-960c-41e7050ccf63_Integration\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Mon Feb 27 2023 21:41:20 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"63fd4db0a9ab10e0d1498876\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"64021a58734a4170c67b0f54\",\r",
+							"            \"nameGroup\": \"87fe3ff3-75df-41a1-aa93-d4942c847898_Applications\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Fri Mar 03 2023 13:03:36 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"64021a58734a4170c67b0f55\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"640bd2136c3f9beb06ba4d99\",\r",
+							"            \"nameGroup\": \"Data_black\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Fri Mar 10 2023 21:57:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bd2136c3f9beb06ba4d9a\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        },\r",
+							"        {\r",
+							"            \"_id\": \"640bd21b6c3f9beb06ba4da5\",\r",
+							"            \"nameGroup\": \"Tactics_blue\",\r",
+							"            \"status\": true,\r",
+							"            \"audit\": [{\r",
+							"                \"registrationDate\": \"Fri Mar 10 2023 21:58:03 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                \"loginUser\": \"teste147\",\r",
+							"                \"registration\": \"QaCoders-0001\",\r",
+							"                \"_id\": \"640bd21b6c3f9beb06ba4da6\"\r",
+							"            }],\r",
+							"            \"__v\": 0\r",
+							"        }]\r",
+							"    ]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//pm.test(\"Validar o corpo da resposta\", function(){\r",
+							"  //  pm.response.to.have.jsonSchema(schema)\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/accessGroups/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - GET ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"        \r",
+							"}   \r",
+							"    function rodaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", rodaID()) \r",
+							"    \r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"O id recebido é igual a \" + pm.environment.get(\"NewID\"), function () {\r",
+							"    pm.expect(jsonData._id).to.eql(pm.environment.get(\"NewID\"));\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - Update",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}') + \"_alterado\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"\r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"const schema = {\r",
+							"    \"title\": \"Root Schema\",\r",
+							"    \"type\": \"object\",\r",
+							"    \"default\": {},\r",
+							"    \"required\": [\r",
+							"        \"nameGroup\",\r",
+							"        \"status\",\r",
+							"        \"audit\",\r",
+							"        \"_id\",\r",
+							"        \"__v\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"nameGroup\": {\r",
+							"            \"title\": \"The nameGroup Schema\",\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"examples\": [\r",
+							"                \"Infrastructure_white\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"status\": {\r",
+							"            \"title\": \"The status Schema\",\r",
+							"            \"type\": \"boolean\",\r",
+							"            \"default\": false,\r",
+							"            \"examples\": [\r",
+							"                true\r",
+							"            ]\r",
+							"        },\r",
+							"        \"audit\": {\r",
+							"            \"title\": \"The audit Schema\",\r",
+							"            \"type\": \"array\",\r",
+							"            \"default\": [],\r",
+							"            \"items\": {\r",
+							"                \"title\": \"A Schema\",\r",
+							"                \"type\": \"object\",\r",
+							"                \"default\": {},\r",
+							"                \"required\": [\r",
+							"                    \"registrationDate\",\r",
+							"                    \"loginUser\",\r",
+							"                    \"registration\",\r",
+							"                    \"_id\"\r",
+							"                ],\r",
+							"                \"properties\": {\r",
+							"                    \"registrationDate\": {\r",
+							"                        \"title\": \"The registrationDate Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"loginUser\": {\r",
+							"                        \"title\": \"The loginUser Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"teste147\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"registration\": {\r",
+							"                        \"title\": \"The registration Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"QaCoders-0001\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"_id\": {\r",
+							"                        \"title\": \"The _id Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"640bdd536c3f9beb06ba5292\"\r",
+							"                        ]\r",
+							"                    }\r",
+							"                },\r",
+							"                \"examples\": [{\r",
+							"                    \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"teste147\",\r",
+							"                    \"registration\": \"QaCoders-0001\",\r",
+							"                    \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"                }]\r",
+							"            },\r",
+							"            \"examples\": [\r",
+							"                [{\r",
+							"                    \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"teste147\",\r",
+							"                    \"registration\": \"QaCoders-0001\",\r",
+							"                    \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"                }]\r",
+							"            ]\r",
+							"        },\r",
+							"        \"_id\": {\r",
+							"            \"title\": \"The _id Schema\",\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"examples\": [\r",
+							"                \"640bdd536c3f9beb06ba5291\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"__v\": {\r",
+							"            \"title\": \"The __v Schema\",\r",
+							"            \"type\": \"integer\",\r",
+							"            \"default\": 0,\r",
+							"            \"examples\": [\r",
+							"                0\r",
+							"            ]\r",
+							"        }\r",
+							"    },\r",
+							"    \"examples\": [{\r",
+							"        \"nameGroup\": \"Infrastructure_white\",\r",
+							"        \"status\": true,\r",
+							"        \"audit\": [{\r",
+							"            \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"            \"loginUser\": \"teste147\",\r",
+							"            \"registration\": \"QaCoders-0001\",\r",
+							"            \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"        }],\r",
+							"        \"_id\": \"640bdd536c3f9beb06ba5291\",\r",
+							"        \"__v\": 0\r",
+							"    }]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"O id recebido é igual a \" + pm.environment.get(\"NewID\"), function () {\r",
+							"    pm.expect(jsonData._id).to.eql(pm.environment.get(\"NewID\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"O nameGroup recebido é igual a \" + pm.environment.get(\"nameGroup\"), function () {\r",
+							"    pm.expect(jsonData.nameGroup).to.eql(pm.environment.get(\"nameGroup\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar o corpo da resposta\", function(){\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":\"{{nameGroup}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - Count",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessGroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"    function RodaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"   { \r",
+							"    pm.environment.set(\"Total\", lista.length)\r",
+							"   }\r",
+							"\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"O numero de grupos está correto\", function () {\r",
+							"\r",
+							"    pm.expect(jsonData.value).to.eql(pm.environment.get(\"Total\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/count",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"//pm.test(\"Body is correct\", function () {\r",
+							"    pm.response.to.have.body(\"\");\r",
+							"//});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessGroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"     var lista = []\r",
+							"     var data = res.json();\r",
+							"     for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de Cadastro Com Campo Vazio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Bad Request 400 está correto\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"A resposta do erro deve ser 'O campo nome do grupo é obrigatório.'\", function(){\r",
+							"    pm.expect(jsonData.alert).to.eql([\"O campo nome do grupo é obrigatório.\"])\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}'));\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":\"\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"{{loginUser}}\",\r\n            \"registrationDate\": \"{{registrationDate}}\",\r\n            \"registration\":\"{{registration}}\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de Cadastro Com Campo Null",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Bad Request 400 está correto\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"A resposta do erro deve ser 'O campo nome do grupo é obrigatório.'\", function(){\r",
+							"    pm.expect(jsonData.alert).to.eql([\"O campo nome do grupo é obrigatório.\"])\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": null,\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"{{loginUser}}\",\r\n            \"registrationDate\": \"{{registrationDate}}\",\r\n            \"registration\":\"{{registration}}\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de Cadastro Com Campo Preenchido com Number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verificar se foi enviado um valor do tipo 'Number'\", function() {\r",
+							"    pm.expect(pm.environment.get(\"number\")).to.be.a(\"number\")\r",
+							"})\r",
+							"\r",
+							"let numerozinho = pm.environment.get(\"number\")\r",
+							"pm.test(\"Verificar se valor enviado é igual ao recebido\", function(){\r",
+							"    pm.expect(jsonData.nameGroup).to.eql(numerozinho.toString())\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"number\", parseInt(pm.variables.replaceIn(\"{{$randomBankAccount}}\")))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": {{number}},\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"{{loginUser}}\",\r\n            \"registrationDate\": \"{{registrationDate}}\",\r\n            \"registration\":\"{{registration}}\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de Cadastro Com Grupo Já Existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"BadRequest está correto\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"A resposta do erro deve ser 'Nome do grupo já cadastrado.'\", function(){\r",
+							"    pm.expect(jsonData.alert).to.eql([\"Nome do grupo já cadastrado.\"])\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessGroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i].nameGroup)\r",
+							"}\r",
+							"    function getNameGroup() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"    pm.environment.set(\"getName\", getNameGroup())\r",
+							"\r",
+							"  });"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": \"{{getName}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"{{loginUser}}\",\r\n            \"registrationDate\": \"{{registrationDate}}\",\r\n            \"registration\":\"{{registration}}\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de Cadastro Com Campo Caracteres Especiais",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"let symbols = pm.environment.get(\"symbols\")\r",
+							"\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"default\": {},\r",
+							"    \"title\": \"Root Schema\",\r",
+							"    \"required\": [\r",
+							"        \"nameGroup\",\r",
+							"        \"status\",\r",
+							"        \"audit\",\r",
+							"        \"_id\",\r",
+							"        \"__v\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"nameGroup\": {\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"title\": \"The nameGroup Schema\",\r",
+							"            \"examples\": [\r",
+							"                \"Identity!_.,@-;/\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"status\": {\r",
+							"            \"type\": \"boolean\",\r",
+							"            \"default\": false,\r",
+							"            \"title\": \"The status Schema\",\r",
+							"            \"examples\": [\r",
+							"                true\r",
+							"            ]\r",
+							"        },\r",
+							"        \"audit\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"default\": [],\r",
+							"            \"title\": \"The audit Schema\",\r",
+							"            \"items\": {\r",
+							"                \"type\": \"object\",\r",
+							"                \"default\": {},\r",
+							"                \"title\": \"A Schema\",\r",
+							"                \"required\": [\r",
+							"                    \"registrationDate\",\r",
+							"                    \"loginUser\",\r",
+							"                    \"registration\",\r",
+							"                    \"_id\"\r",
+							"                ],\r",
+							"                \"properties\": {\r",
+							"                    \"registrationDate\": {\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"title\": \"The registrationDate Schema\",\r",
+							"                        \"examples\": [\r",
+							"                            \"Sat Mar 18 2023 00:35:46 GMT-0300 (Horário Padrão de Brasília)\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"loginUser\": {\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"title\": \"The loginUser Schema\",\r",
+							"                        \"examples\": [\r",
+							"                            \"{{loginUser}}\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"registration\": {\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"title\": \"The registration Schema\",\r",
+							"                        \"examples\": [\r",
+							"                            \"{{registration}}\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"_id\": {\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"title\": \"The _id Schema\",\r",
+							"                        \"examples\": [\r",
+							"                            \"641531929a6406df2053f34f\"\r",
+							"                        ]\r",
+							"                    }\r",
+							"                },\r",
+							"                \"examples\": [{\r",
+							"                    \"registrationDate\": \"Sat Mar 18 2023 00:35:46 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"{{loginUser}}\",\r",
+							"                    \"registration\": \"{{registration}}\",\r",
+							"                    \"_id\": \"641531929a6406df2053f34f\"\r",
+							"                }]\r",
+							"            },\r",
+							"            \"examples\": [\r",
+							"                [{\r",
+							"                    \"registrationDate\": \"Sat Mar 18 2023 00:35:46 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"{{loginUser}}\",\r",
+							"                    \"registration\": \"{{registration}}\",\r",
+							"                    \"_id\": \"641531929a6406df2053f34f\"\r",
+							"                }]\r",
+							"            ]\r",
+							"        },\r",
+							"        \"_id\": {\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"title\": \"The _id Schema\",\r",
+							"            \"examples\": [\r",
+							"                \"641531929a6406df2053f34e\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"__v\": {\r",
+							"            \"type\": \"integer\",\r",
+							"            \"default\": 0,\r",
+							"            \"title\": \"The __v Schema\",\r",
+							"            \"examples\": [\r",
+							"                0\r",
+							"            ]\r",
+							"        }\r",
+							"    },\r",
+							"    \"examples\": [{\r",
+							"        \"nameGroup\": \"Identity!_.,@-;/\",\r",
+							"        \"status\": true,\r",
+							"        \"audit\": [{\r",
+							"            \"registrationDate\": \"Sat Mar 18 2023 00:35:46 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"            \"loginUser\": \"{{loginUser}}\",\r",
+							"            \"registration\": \"{{registration}}\",\r",
+							"            \"_id\": \"641531929a6406df2053f34f\"\r",
+							"        }],\r",
+							"        \"_id\": \"641531929a6406df2053f34e\",\r",
+							"        \"__v\": 0\r",
+							"    }]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar o campo recebido NameGroup é igual ao enviado\", function(){\r",
+							"    pm.expect(jsonData.nameGroup).to.eql(symbols)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar o corpo da resposta\", function(){\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"symbols\", pm.variables.replaceIn(\"{{$randomJobArea}}\"+ \"!@@_.,@-;/\"))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":\"{{symbols}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"{{loginUser}}\",\r\n            \"registrationDate\": \"{{registrationDate}}\",\r\n            \"registration\":\"{{registration}}\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de Cadastro Sem Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"'Forbiden' está correto\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test('Validar mensagem de erro', function(){\r",
+							"    pm.expect(jsonData.errors).to.eql([\"No token provided.\"])\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"NameGroup\", pm.variables.replaceIn('{{$guid}}') + \"_\" + pm.variables.replaceIn('{{$randomJobArea}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":\"{{NameGroup}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"{{loginUser}}\",\r\n            \"registrationDate\": \"{{registrationDate}}\",\r\n            \"registration\":\"{{registration}}\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de Cadastro Com Token Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"'Forbiden' está correto\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test('Validar mensagem de erro', function(){\r",
+							"    pm.expect(jsonData.errors).to.eql([\"Failed to authenticate token.\"])\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"NameGroup\", pm.variables.replaceIn('{{$guid}}') + \"_\" + pm.variables.replaceIn('{{$randomJobArea}}'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "skapskpaskop11i1ji",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":\"{{NameGroup}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"{{loginUser}}\",\r\n            \"registrationDate\": \"{{registrationDate}}\",\r\n            \"registration\":\"{{registration}}\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - GET LIST Token Invalido",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"Failed to authenticate token.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "sakpskpakp1111",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - GET LIST Sem Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"No token provided.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - GET ID - Sem Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"        \r",
+							"}   \r",
+							"    function rodaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", rodaID()) \r",
+							"    \r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"No token provided.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - GET ID - Token Invalido",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"        \r",
+							"}   \r",
+							"    function rodaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", rodaID()) \r",
+							"    \r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"Failed to authenticate token.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "sakpsakpk1pk1p1kp1kp",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - COUNT Sem Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"No token provided.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - COUNT Token Invalido",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"Failed to authenticate token.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "sakpsakpkp1kpk1p1j",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/count",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de alterar cadastro com campo vazio",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\",\r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"O campo 'nameGroup' é obrigatório.\"]);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":\"\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de alterar cadastro preenchedo o campo com NULL",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}') + \"_alterado\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"\r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"O campo 'nameGroup' é obrigatório.\"]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\":null,\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de alterar cadastro preenchendo com number",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}') + \"_alterado\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"\r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"const schema = {\r",
+							"    \"title\": \"Root Schema\",\r",
+							"    \"type\": \"object\",\r",
+							"    \"default\": {},\r",
+							"    \"required\": [\r",
+							"        \"nameGroup\",\r",
+							"        \"status\",\r",
+							"        \"audit\",\r",
+							"        \"_id\",\r",
+							"        \"__v\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"nameGroup\": {\r",
+							"            \"title\": \"The nameGroup Schema\",\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"examples\": [\r",
+							"                \"Infrastructure_white\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"status\": {\r",
+							"            \"title\": \"The status Schema\",\r",
+							"            \"type\": \"boolean\",\r",
+							"            \"default\": false,\r",
+							"            \"examples\": [\r",
+							"                true\r",
+							"            ]\r",
+							"        },\r",
+							"        \"audit\": {\r",
+							"            \"title\": \"The audit Schema\",\r",
+							"            \"type\": \"array\",\r",
+							"            \"default\": [],\r",
+							"            \"items\": {\r",
+							"                \"title\": \"A Schema\",\r",
+							"                \"type\": \"object\",\r",
+							"                \"default\": {},\r",
+							"                \"required\": [\r",
+							"                    \"registrationDate\",\r",
+							"                    \"loginUser\",\r",
+							"                    \"registration\",\r",
+							"                    \"_id\"\r",
+							"                ],\r",
+							"                \"properties\": {\r",
+							"                    \"registrationDate\": {\r",
+							"                        \"title\": \"The registrationDate Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"loginUser\": {\r",
+							"                        \"title\": \"The loginUser Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"teste147\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"registration\": {\r",
+							"                        \"title\": \"The registration Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"QaCoders-0001\"\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    \"_id\": {\r",
+							"                        \"title\": \"The _id Schema\",\r",
+							"                        \"type\": \"string\",\r",
+							"                        \"default\": \"\",\r",
+							"                        \"examples\": [\r",
+							"                            \"640bdd536c3f9beb06ba5292\"\r",
+							"                        ]\r",
+							"                    }\r",
+							"                },\r",
+							"                \"examples\": [{\r",
+							"                    \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"teste147\",\r",
+							"                    \"registration\": \"QaCoders-0001\",\r",
+							"                    \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"                }]\r",
+							"            },\r",
+							"            \"examples\": [\r",
+							"                [{\r",
+							"                    \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"                    \"loginUser\": \"teste147\",\r",
+							"                    \"registration\": \"QaCoders-0001\",\r",
+							"                    \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"                }]\r",
+							"            ]\r",
+							"        },\r",
+							"        \"_id\": {\r",
+							"            \"title\": \"The _id Schema\",\r",
+							"            \"type\": \"string\",\r",
+							"            \"default\": \"\",\r",
+							"            \"examples\": [\r",
+							"                \"640bdd536c3f9beb06ba5291\"\r",
+							"            ]\r",
+							"        },\r",
+							"        \"__v\": {\r",
+							"            \"title\": \"The __v Schema\",\r",
+							"            \"type\": \"integer\",\r",
+							"            \"default\": 0,\r",
+							"            \"examples\": [\r",
+							"                0\r",
+							"            ]\r",
+							"        }\r",
+							"    },\r",
+							"    \"examples\": [{\r",
+							"        \"nameGroup\": \"Infrastructure_white\",\r",
+							"        \"status\": true,\r",
+							"        \"audit\": [{\r",
+							"            \"registrationDate\": \"Fri Mar 10 2023 22:45:55 GMT-0300 (Horário Padrão de Brasília)\",\r",
+							"            \"loginUser\": \"teste147\",\r",
+							"            \"registration\": \"QaCoders-0001\",\r",
+							"            \"_id\": \"640bdd536c3f9beb06ba5292\"\r",
+							"        }],\r",
+							"        \"_id\": \"640bdd536c3f9beb06ba5291\",\r",
+							"        \"__v\": 0\r",
+							"    }]\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validar o corpo da resposta\", function(){\r",
+							"    pm.response.to.have.jsonSchema(schema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": {{number}},\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de alterar cadastro com nome de grupo já existente",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}') + \"_alterado\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"\r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 500\", function () {\r",
+							"    pm.response.to.have.status(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": \"Markets_sky blue!!!@@@@@___\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de alterar cadastro com caracteres especiais",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}') + \"!!!@@@@@___\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\",\r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"O id recebido é igual a \" + pm.environment.get(\"NewID\"), function () {\r",
+							"    pm.expect(jsonData._id).to.eql(pm.environment.get(\"NewID\"));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"O nameGroup recebido é igual a \" + pm.environment.get(\"nameGroup\"), function () {\r",
+							"    pm.expect(jsonData.nameGroup).to.eql(pm.environment.get(\"nameGroup\"));\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": \"{{nameGroup}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de alterar cadastro sem token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}') + \"_alterado\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"\r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"No token provided.\"]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": \"{{nameGroup}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tentativa de alterar cadastro com token invalido",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"nameGroup\", pm.variables.replaceIn('{{$randomJobArea}}') + '_' + pm.variables.replaceIn('{{$randomColor}}') + \"_alterado\");\r",
+							"\r",
+							"\r",
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessgroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"    var lista = []\r",
+							"    var data = res.json();\r",
+							"    for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"\r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"\r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"Failed to authenticate token.\"]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "1K1IO31JOI1I2HI1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nameGroup\": \"{{nameGroup}}\",\r\n    \"audit\": [\r\n        {\r\n            \"loginUser\": \"teste147\",\r\n            \"registrationDate\": \"Sat Feb 11 2023 18:49:33 GMT-0300 (Horário Padrão de Brasília)\",\r\n            \"registration\":\"QaCoders-0001\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - DELETE - Sem Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"No token provided.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessGroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"     var lista = []\r",
+							"     var data = res.json();\r",
+							"     for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/{{NewID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						"{{NewID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - DELETE Token Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status code is 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"mensagem de erro está correta\", function () {\r",
+							"    pm.expect(jsonData.errors).to.eql([\"Failed to authenticate token.\"]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessGroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"     var lista = []\r",
+							"     var id = res.json();\r",
+							"     for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"    function rodaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", rodaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "skp1kps1kpkp11p1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccessGroup - DELETE Sem Parametro",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.sendRequest({\r",
+							"      url:  \"https://flutter.qacoders-academy.com.br/api/accessGroups\", \r",
+							"      method: 'GET',\r",
+							"      header: {\r",
+							"        'Accept': 'application/json',\r",
+							"        'Authorization': pm.environment.get('Token')\r",
+							"      },\r",
+							"      body: {}\r",
+							"  }, function (err, res) {\r",
+							"     var lista = []\r",
+							"     var data = res.json();\r",
+							"     for (let i = 0; i < data.length; i++) {\r",
+							"        var push_list = lista.push(data[i]._id)\r",
+							"}    \r",
+							"    function RandomizaID() {\r",
+							"        randomItem = lista [Math.floor(Math.random() * lista.length)];\r",
+							"    \r",
+							"    return randomItem\r",
+							"}\r",
+							"\r",
+							"     pm.environment.set(\"NewID\", RandomizaID())\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{Token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "Authorization",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{Token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/accessGroups/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"accessGroups",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{Token}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
